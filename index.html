@@ -20,7 +20,7 @@
         .nav-links a:hover {color: #1a1a1a;}
         .nav-links a:hover::after {width: 100%;}
 
-        /* Hero Section - FIXED: Title & Tagline Stay on Top */
+        /* Hero Section - FIXED BACKGROUND - NO OVERFLOW */
         .hero {
             height: 100vh; 
             position: relative; 
@@ -28,8 +28,6 @@
             margin-top: 80px;
             width: 100%;
         }
-        
-        /* Slideshow Background Layer */
         .slideshow {
             position: absolute; 
             width: 100%; 
@@ -38,8 +36,8 @@
             left: 0; 
             z-index: 1;
             overflow: hidden;
+            clip-path: inset(0);
         }
-        
         .slide {
             position: absolute; 
             width: 100%; 
@@ -49,15 +47,10 @@
             opacity: 0; 
             transition: opacity 1.5s ease-in-out;
             background-size: cover; 
-            background-position: center center; 
+            background-position: 50% 50%; 
             background-repeat: no-repeat;
+            overflow: hidden;
         }
-        
-        .slide.active {
-            opacity: 1;
-        }
-        
-        /* Optional: Semi-transparent overlay for better text readability */
         .slide::after {
             content: '';
             position: absolute;
@@ -65,11 +58,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3); /* Adjust opacity as needed */
+            background: rgba(0, 0, 0, 0.3);
             z-index: 1;
         }
-        
-        /* Hero Content Layer - Above Slideshow */
+        .slide.active {opacity: 1;}
         .hero-content {
             position: absolute;
             top: 50%;
@@ -77,40 +69,15 @@
             transform: translate(-50%, -50%);
             text-align: center; 
             color: white; 
-            z-index: 10; /* Higher than slideshow */
+            z-index: 10;
             animation: fadeInUp 1s ease; 
             padding: 20px;
             width: 90%;
             max-width: 1000px;
         }
-        
-        @keyframes fadeInUp {
-            from {opacity: 0; transform: translate(-50%, calc(-50% + 30px));}
-            to {opacity: 1; transform: translate(-50%, -50%);}
-        }
-        
-        .hero-title {
-            font-size: 72px; 
-            font-weight: 700; 
-            letter-spacing: 8px; 
-            margin-bottom: 15px; 
-            text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.8);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero-tagline {
-            font-size: 20px; 
-            font-weight: 300; 
-            letter-spacing: 3px; 
-            color: #f4d03f; 
-            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8); 
-            max-width: 800px; 
-            margin: 0 auto; 
-            line-height: 1.4;
-            position: relative;
-            z-index: 2;
-        }
+        @keyframes fadeInUp {from {opacity: 0; transform: translate(-50%, calc(-50% + 30px));} to {opacity: 1; transform: translate(-50%, -50%);}}
+        .hero-title {font-size: 72px; font-weight: 700; letter-spacing: 8px; margin-bottom: 15px; text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.8);}
+        .hero-tagline {font-size: 20px; font-weight: 300; letter-spacing: 3px; color: #f4d03f; text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8); max-width: 800px; margin: 0 auto; line-height: 1.4;}
 
         /* Loading */
         .loading {text-align: center; padding: 100px 0; color: #f4d03f; font-size: 18px;}
@@ -130,7 +97,7 @@
         .activity-title {font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px;}
         .activity-description {font-size: 14px; color: #666; line-height: 1.6;}
 
-        /* Products */
+        /* Products - FIXED CENTER ALIGNMENT */
         .products-section {background: #fafafa; padding: 80px 0; margin: 80px 0;}
         .products-container {max-width: 1200px; margin: 0 auto; padding: 0 30px;}
         .products-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 40px; justify-items: center;}
@@ -189,10 +156,7 @@
     </header>
 
     <section class="hero" id="home">
-        <!-- Background Slideshow Layer (z-index: 1) -->
         <div class="slideshow" id="slideshow"></div>
-        
-        <!-- Hero Content Layer - Always on Top (z-index: 10) -->
         <div class="hero-content">
             <h1 class="hero-title">BRIGADIR</h1>
             <p class="hero-tagline" id="heroTagline">Loading...</p>
@@ -201,37 +165,36 @@
 
     <section id="activities">
         <div class="section-header">
-            <h2 class="section-title">Our Activities</h2>
-            <p class="section-subtitle">Kegiatan dan program yang kami lakukan</p>
+            <h2 class="section-title">Kegiatan Kami</h2>
+            <p class="section-subtitle">Berbagai aktivitas positif BRIGADIR</p>
         </div>
-        <div id="activitiesLoading" class="loading">Loading activities...</div>
+        <div class="loading" id="activitiesLoading">Memuat kegiatan...</div>
         <div class="activities-grid" id="activitiesGrid"></div>
-        <div class="button-center" style="display: none;" id="activitiesButton">
-            <a href="activities.html" class="soft-button">View All Activities</a>
+        <div class="button-center" id="activitiesButton" style="display:none;">
+            <a href="activities.html" class="soft-button">All Activity</a>
         </div>
     </section>
 
     <div class="products-section" id="products">
         <div class="products-container">
             <div class="section-header">
-                <h2 class="section-title">Our Products</h2>
-                <p class="section-subtitle">Produk dan merchandise kami</p>
+                <h2 class="section-title">Produk Sewa</h2>
+                <p class="section-subtitle">Layanan persewaan untuk kebutuhan acara Anda</p>
             </div>
-            <div id="productsLoading" class="loading">Loading products...</div>
+            <div class="loading" id="productsLoading">Memuat produk...</div>
             <div class="products-grid" id="productsGrid"></div>
-            <div class="button-center" style="display: none;" id="productsButton">
-                <a href="products.html" class="soft-button">View All Products</a>
+            <div class="button-center" id="productsButton" style="display:none;">
+                <a href="products.html" class="soft-button">Show All Products</a>
             </div>
         </div>
     </div>
 
     <section id="about">
-        <div class="section-header">
-            <h2 class="section-title">About Us</h2>
-            <p class="section-subtitle">Mengenal lebih dekat BRIGADIR</p>
-        </div>
         <div class="about-section">
-            <div id="aboutLoading" class="loading">Loading information...</div>
+            <div class="section-header">
+                <h2 class="section-title">Tentang BRIGADIR</h2>
+            </div>
+            <div class="loading" id="aboutLoading">Memuat informasi...</div>
             <div class="about-content" id="aboutContent"></div>
         </div>
     </section>
@@ -240,26 +203,7 @@
         <div class="footer-content" id="footerContent">
             <div class="footer-section">
                 <h3>BRIGADIR</h3>
-                <p>Organisasi siswa yang berkomitmen untuk pengembangan karakter dan prestasi.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <a href="#home">Home</a>
-                <a href="#activities">Activities</a>
-                <a href="#products">Products</a>
-                <a href="#about">About</a>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <p>Email: brigadir@school.ac.id</p>
-                <p>Phone: +62 812 3456 7890</p>
-                <p>Kota Kediri, Jawa Timur</p>
-            </div>
-            <div class="footer-section">
-                <h3>Follow Us</h3>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
+                <p>Loading...</p>
             </div>
         </div>
         <div class="copyright">
@@ -268,50 +212,65 @@
     </footer>
 
     <script>
+        const SPREADSHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHuoDTekMlHzFQVbMkHIDP8S6cOnmzcs-cGtW2laUnlqtEp9sX77IN0kgYiWQrPUyLH9mmmmWWFVHy/pub';
+        
         const SHEETS = {
-            config: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=0&single=true&output=csv',
-            hero: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=1&single=true&output=csv',
-            activities: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=2&single=true&output=csv',
-            products: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=3&single=true&output=csv',
-            about: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=4&single=true&output=csv'
+            config: `${SPREADSHEET_BASE}?gid=0&single=true&output=csv`,
+            hero: `${SPREADSHEET_BASE}?gid=925475388&single=true&output=csv`,
+            activities: `${SPREADSHEET_BASE}?gid=2011666838&single=true&output=csv`,
+            products: `${SPREADSHEET_BASE}?gid=586106354&single=true&output=csv`,
+            about: `${SPREADSHEET_BASE}?gid=1093669165&single=true&output=csv`
         };
 
+        // IMPROVED CSV PARSER - Handles commas in text
         function parseCSV(csv) {
             const lines = csv.trim().split('\n');
             if (lines.length < 2) return [];
             
-            const headers = lines[0].split(',').map(h => h.trim().replace(/['"]/g, ''));
+            const headers = lines[0].split(',').map(h => h.trim());
             const data = [];
-            
+
             for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',').map(v => v.trim().replace(/['"]/g, ''));
-                const obj = {};
+                if (!lines[i].trim()) continue;
+                
+                // Handle quoted fields with commas
+                const regex = /(?:,|\n|^)("(?:(?:"")*[^"]*)*"|[^",\n]*|(?:\n|$))/g;
+                const values = [];
+                let match;
+                
+                while ((match = regex.exec(lines[i])) !== null) {
+                    let value = match[1];
+                    if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.slice(1, -1).replace(/""/g, '"');
+                    }
+                    values.push(value.trim());
+                }
+                
+                const row = {};
                 headers.forEach((header, index) => {
-                    obj[header] = values[index] || '';
+                    row[header] = values[index] || '';
                 });
-                data.push(obj);
+                data.push(row);
             }
-            
             return data;
         }
 
         function formatPrice(price) {
-            const num = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.-]+/g, '')) : price;
-            if (isNaN(num)) return 'Rp 0';
-            return 'Rp ' + num.toLocaleString('id-ID');
+            return 'Rp ' + parseInt(price).toLocaleString('id-ID');
         }
 
         async function loadConfig() {
             try {
                 const response = await fetch(SHEETS.config);
                 const csv = await response.text();
-                const config = parseCSV(csv);
+                const data = parseCSV(csv);
                 
-                if (config.length > 0) {
-                    document.title = config[0].site_title || 'BRIGADIR';
+                if (data.length > 0 && data[0].tagline) {
+                    document.getElementById('heroTagline').textContent = data[0].tagline;
                 }
             } catch (error) {
                 console.error('Error loading config:', error);
+                document.getElementById('heroTagline').textContent = 'Bersama Membangun Prestasi';
             }
         }
 
@@ -319,31 +278,34 @@
             try {
                 const response = await fetch(SHEETS.hero);
                 const csv = await response.text();
-                const hero = parseCSV(csv);
+                const images = parseCSV(csv);
                 
-                if (hero.length > 0) {
-                    document.getElementById('heroTagline').textContent = hero[0].tagline || 'Organisasi Siswa Berbasis Kepemimpinan';
-                    
-                    const slideshow = document.getElementById('slideshow');
-                    slideshow.innerHTML = '';
-                    
-                    hero.forEach((slide, index) => {
-                        if (slide.image) {
-                            const slideDiv = document.createElement('div');
-                            slideDiv.className = 'slide';
-                            slideDiv.style.backgroundImage = `url('${slide.image}')`;
-                            if (index === 0) slideDiv.classList.add('active');
-                            slideshow.appendChild(slideDiv);
+                const slideshow = document.getElementById('slideshow');
+                slideshow.innerHTML = '';
+                
+                if (images.length > 0) {
+                    images.forEach((img, index) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'slide' + (index === 0 ? ' active' : '');
+                        if (img.url) {
+                            slide.style.backgroundImage = `url('${img.url}')`;
+                        } else {
+                            slide.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)';
                         }
+                        slideshow.appendChild(slide);
                     });
-                    
-                    if (hero.length > 1) {
-                        startSlideshow();
+                    startSlideshow();
+                } else {
+                    for (let i = 0; i < 3; i++) {
+                        const slide = document.createElement('div');
+                        slide.className = 'slide' + (i === 0 ? ' active' : '');
+                        slide.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)';
+                        slideshow.appendChild(slide);
                     }
+                    startSlideshow();
                 }
             } catch (error) {
                 console.error('Error loading hero:', error);
-                document.getElementById('heroTagline').textContent = 'Organisasi Siswa Berbasis Kepemimpinan';
             }
         }
 
