@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BRIGADIR - Organisasi Siswa</title>
     <style>
-        * {margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; }
+        * {margin: 0; padding: 0; box-sizing: border-box;}
         body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333; overflow-x: hidden;}
         
         /* Header */
@@ -22,13 +22,11 @@
 
         /* Hero Section - FIXED BACKGROUND - NO OVERFLOW */
         .hero {
-            height: calc(100vh - 80px); 
+            height: 100vh; 
             position: relative; 
             overflow: hidden; 
             margin-top: 80px;
             width: 100%;
-            left: 50%;
-            transform: translateX(-50%);
         }
         .slideshow {
             position: absolute; 
@@ -36,6 +34,8 @@
             height: 100%; 
             top: 0; 
             left: 0; 
+            overflow: hidden;
+            clip-path: inset(0);
         }
         .slide {
             position: absolute; 
@@ -46,11 +46,20 @@
             opacity: 0; 
             transition: opacity 1.5s ease-in-out;
             background-size: cover; 
-            background-position: center; 
+            background-position: 50% 50%; 
             background-repeat: no-repeat;
             overflow: hidden;
         }
-        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+        }
         .slide.active {opacity: 1;}
         .hero-overlay {position: absolute; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; z-index: 2;}
         .hero-content {text-align: center; color: white; animation: fadeInUp 1s ease; padding: 20px;}
