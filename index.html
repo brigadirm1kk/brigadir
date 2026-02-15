@@ -20,16 +20,16 @@
         .nav-links a:hover {color: #1a1a1a;}
         .nav-links a:hover::after {width: 100%;}
 
-        /* Hero Section */
+        /* Hero Section - FIXED BACKGROUND */
         .hero {height: 100vh; position: relative; overflow: hidden; margin-top: 80px;}
         .slideshow {position: absolute; width: 100%; height: 100%; top: 0; left: 0;}
-        .slide {position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1.5s ease-in-out; background-size: cover; background-position: center;}
+        .slide {position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1.5s ease-in-out; background-size: cover; background-position: center; background-repeat: no-repeat;}
         .slide.active {opacity: 1;}
         .hero-overlay {position: absolute; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; z-index: 2;}
-        .hero-content {text-align: center; color: white; animation: fadeInUp 1s ease;}
+        .hero-content {text-align: center; color: white; animation: fadeInUp 1s ease; padding: 20px;}
         @keyframes fadeInUp {from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);}}
         .hero-title {font-size: 72px; font-weight: 700; letter-spacing: 8px; margin-bottom: 15px; text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);}
-        .hero-tagline {font-size: 20px; font-weight: 300; letter-spacing: 3px; color: #f4d03f; text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);}
+        .hero-tagline {font-size: 20px; font-weight: 300; letter-spacing: 3px; color: #f4d03f; text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5); max-width: 800px; margin: 0 auto; line-height: 1.4;}
 
         /* Loading */
         .loading {text-align: center; padding: 100px 0; color: #f4d03f; font-size: 18px;}
@@ -49,9 +49,11 @@
         .activity-title {font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px;}
         .activity-description {font-size: 14px; color: #666; line-height: 1.6;}
 
-        /* Products */
-        .products-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 40px;}
-        .product-card {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;}
+        /* Products - FIXED CENTER ALIGNMENT */
+        .products-section {background: #fafafa; padding: 80px 0; margin: 80px 0;}
+        .products-container {max-width: 1200px; margin: 0 auto; padding: 0 30px;}
+        .products-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 40px; justify-items: center;}
+        .product-card {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; width: 100%; max-width: 350px;}
         .product-card:hover {transform: translateY(-8px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);}
         .product-image {width: 100%; height: 200px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); background-size: cover; background-position: center;}
         .product-info {padding: 20px;}
@@ -85,11 +87,11 @@
             .nav-links {gap: 20px;}
             .about-section {padding: 30px;}
             section {padding: 60px 20px;}
+            .products-grid {grid-template-columns: 1fr;}
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <nav>
             <div class="logo-container">
@@ -105,11 +107,8 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="slideshow" id="slideshow">
-            <!-- Slides will be loaded from spreadsheet -->
-        </div>
+        <div class="slideshow" id="slideshow"></div>
         <div class="hero-overlay">
             <div class="hero-content">
                 <h1 class="hero-title">BRIGADIR</h1>
@@ -118,7 +117,6 @@
         </div>
     </section>
 
-    <!-- Activities Section -->
     <section id="activities">
         <div class="section-header">
             <h2 class="section-title">Kegiatan Kami</h2>
@@ -131,9 +129,8 @@
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section id="products" style="background: #fafafa; padding: 80px 30px; margin: 0 -100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);">
-        <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="products-section" id="products">
+        <div class="products-container">
             <div class="section-header">
                 <h2 class="section-title">Produk Sewa</h2>
                 <p class="section-subtitle">Layanan persewaan untuk kebutuhan acara Anda</p>
@@ -144,9 +141,8 @@
                 <a href="products.html" class="soft-button">Show All Products</a>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- About Section -->
     <section id="about">
         <div class="about-section">
             <div class="section-header">
@@ -157,7 +153,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content" id="footerContent">
             <div class="footer-section">
@@ -171,18 +166,17 @@
     </footer>
 
     <script>
-        // SPREADSHEET CONFIGURATION
         const SPREADSHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHuoDTekMlHzFQVbMkHIDP8S6cOnmzcs-cGtW2laUnlqtEp9sX77IN0kgYiWQrPUyLH9mmmmWWFVHy/pub';
         
         const SHEETS = {
-            config: `${SPREADSHEET_BASE}?gid=0&single=true&output=csv`,      // Sheet 1: Config (tagline, dll)
-            hero: `${SPREADSHEET_BASE}?gid=925475388&single=true&output=csv`,        // Sheet 2: Hero Images
-            activities: `${SPREADSHEET_BASE}?gid=2011666838&single=true&output=csv`,  // Sheet 3: Activities
-            products: `${SPREADSHEET_BASE}?gid=586106354&single=true&output=csv`,    // Sheet 4: Products
-            about: `${SPREADSHEET_BASE}?gid=1093669165&single=true&output=csv`        // Sheet 5: About & Contact
+            config: `${SPREADSHEET_BASE}?gid=0&single=true&output=csv`,
+            hero: `${SPREADSHEET_BASE}?gid=925475388&single=true&output=csv`,
+            activities: `${SPREADSHEET_BASE}?gid=2011666838&single=true&output=csv`,
+            products: `${SPREADSHEET_BASE}?gid=586106354&single=true&output=csv`,
+            about: `${SPREADSHEET_BASE}?gid=1093669165&single=true&output=csv`
         };
 
-        // Parse CSV
+        // IMPROVED CSV PARSER - Handles commas in text
         function parseCSV(csv) {
             const lines = csv.trim().split('\n');
             if (lines.length < 2) return [];
@@ -192,33 +186,41 @@
 
             for (let i = 1; i < lines.length; i++) {
                 if (!lines[i].trim()) continue;
-                const values = lines[i].split(',');
+                
+                // Handle quoted fields with commas
+                const regex = /(?:,|\n|^)("(?:(?:"")*[^"]*)*"|[^",\n]*|(?:\n|$))/g;
+                const values = [];
+                let match;
+                
+                while ((match = regex.exec(lines[i])) !== null) {
+                    let value = match[1];
+                    if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.slice(1, -1).replace(/""/g, '"');
+                    }
+                    values.push(value.trim());
+                }
+                
                 const row = {};
                 headers.forEach((header, index) => {
-                    row[header] = values[index] ? values[index].trim() : '';
+                    row[header] = values[index] || '';
                 });
                 data.push(row);
             }
             return data;
         }
 
-        // Format price
         function formatPrice(price) {
             return 'Rp ' + parseInt(price).toLocaleString('id-ID');
         }
 
-        // Load Config (Tagline)
         async function loadConfig() {
             try {
                 const response = await fetch(SHEETS.config);
                 const csv = await response.text();
                 const data = parseCSV(csv);
                 
-                if (data.length > 0) {
-                    const config = data[0];
-                    if (config.tagline) {
-                        document.getElementById('heroTagline').textContent = config.tagline;
-                    }
+                if (data.length > 0 && data[0].tagline) {
+                    document.getElementById('heroTagline').textContent = data[0].tagline;
                 }
             } catch (error) {
                 console.error('Error loading config:', error);
@@ -226,7 +228,6 @@
             }
         }
 
-        // Load Hero Images
         async function loadHero() {
             try {
                 const response = await fetch(SHEETS.hero);
@@ -249,7 +250,6 @@
                     });
                     startSlideshow();
                 } else {
-                    // Default slides
                     for (let i = 0; i < 3; i++) {
                         const slide = document.createElement('div');
                         slide.className = 'slide' + (i === 0 ? ' active' : '');
@@ -263,7 +263,6 @@
             }
         }
 
-        // Slideshow
         let currentSlide = 0;
         function startSlideshow() {
             const slides = document.querySelectorAll('.slide');
@@ -276,7 +275,6 @@
             }, 4000);
         }
 
-        // Load Activities
         async function loadActivities() {
             try {
                 const response = await fetch(SHEETS.activities);
@@ -313,7 +311,6 @@
             }
         }
 
-        // Load Products
         async function loadProducts() {
             try {
                 const response = await fetch(SHEETS.products);
@@ -351,7 +348,6 @@
             }
         }
 
-        // Load About
         async function loadAbout() {
             try {
                 const response = await fetch(SHEETS.about);
@@ -368,7 +364,6 @@
                         content.innerHTML = `<p class="about-text">${about.description}</p>`;
                     }
                     
-                    // Footer
                     const footer = document.getElementById('footerContent');
                     footer.innerHTML = `
                         <div class="footer-section">
@@ -402,7 +397,6 @@
             }
         }
 
-        // Load all data
         window.addEventListener('DOMContentLoaded', () => {
             loadConfig();
             loadHero();
@@ -411,7 +405,6 @@
             loadAbout();
         });
 
-        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
