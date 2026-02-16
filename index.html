@@ -860,6 +860,8 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         .about-section::before {
             content: '';
@@ -880,7 +882,7 @@
             transform: translateY(-5px);
         }
         .about-content {
-            max-width: 800px; 
+            max-width: 100%;
             margin: 0 auto; 
             text-align: center;
             position: relative;
@@ -892,6 +894,9 @@
             color: #555; 
             margin-bottom: 20px;
             transition: all 0.3s ease;
+            text-align: left;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .about-section:hover .about-text {
             color: #333;
@@ -908,29 +913,31 @@
         @media (max-width: 768px) {
             /* Header Mobile */
             header {
-                padding: 12px 0;
+                padding: 10px 0;
             }
             nav {
-                padding: 0 15px;
+                padding: 0 12px;
+                flex-wrap: nowrap;
             }
             .logo-img {
                 width: 35px;
                 height: 35px;
             }
             .logo-text {
-                font-size: 18px;
-                letter-spacing: 1px;
+                font-size: 16px;
+                letter-spacing: 0.5px;
             }
             .nav-links {
-                gap: 12px;
+                gap: 10px;
             }
             .nav-links a {
-                font-size: 12px;
+                font-size: 11px;
+                padding: 3px 0;
             }
             
             /* Hero Mobile */
             .hero {
-                margin-top: 65px;
+                margin-top: 60px;
                 height: 70vh;
                 min-height: 400px;
             }
@@ -974,6 +981,12 @@
             .activity-card {
                 margin: 0 auto;
                 max-width: 100%;
+                /* Disable 3D effects on mobile */
+                transform: none !important;
+                perspective: none !important;
+            }
+            .activity-card:hover {
+                transform: translateY(-4px) !important;
             }
             .activity-image {
                 height: 180px;
@@ -990,13 +1003,15 @@
                 line-height: 1.5;
             }
             
-            /* Products Mobile */
+            /* Products Mobile - FIX OVERFLOW */
             .products-section {
                 padding: 40px 0;
                 margin: 40px 0;
+                overflow: hidden;
             }
             .products-container {
                 padding: 0 15px;
+                overflow: hidden;
             }
             .products-grid {
                 grid-template-columns: 1fr;
@@ -1004,6 +1019,16 @@
             }
             .product-card {
                 max-width: 100%;
+                margin: 0 auto;
+                /* Disable 3D effects on mobile */
+                transform: none !important;
+                perspective: none !important;
+            }
+            .product-card:hover {
+                transform: translateY(-4px) !important;
+            }
+            .product-card:hover .product-image {
+                transform: scale(1.05) !important;
             }
             .product-image {
                 height: 200px;
@@ -1026,15 +1051,21 @@
                 text-align: center;
             }
             
-            /* About Mobile */
+            /* About Mobile - FIX BERANTAKAN */
             .about-section {
                 padding: 25px 18px;
                 border-radius: 10px;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+            .about-content {
+                max-width: 100%;
             }
             .about-text {
                 font-size: 13px;
                 line-height: 1.6;
                 margin-bottom: 15px;
+                text-align: left;
             }
             
             /* Footer Mobile */
@@ -1069,17 +1100,41 @@
                 font-size: 13px;
             }
             
-            /* Enable parallax on mobile - remove the disable rules */
+            /* Disable all 3D transforms on mobile */
+            * {
+                transform-style: flat !important;
+            }
             
             /* Reduce animation intensity on mobile */
-            .activity-card:hover,
-            .product-card:hover {
-                transform: translateY(-6px);
+            .activity-card,
+            .product-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+            }
+            
+            /* Disable floating shapes on mobile for performance */
+            .bg-shapes {
+                display: none;
             }
         }
         
         /* Extra Small Mobile (≤480px) */
         @media (max-width: 480px) {
+            nav {
+                padding: 0 10px;
+            }
+            .logo-img {
+                width: 30px;
+                height: 30px;
+            }
+            .logo-text {
+                font-size: 14px;
+            }
+            .nav-links {
+                gap: 6px;
+            }
+            .nav-links a {
+                font-size: 10px;
+            }
             .hero {
                 height: 65vh;
                 min-height: 350px;
@@ -1097,19 +1152,6 @@
             }
             .section-subtitle {
                 font-size: 12px;
-            }
-            .nav-links {
-                gap: 8px;
-            }
-            .nav-links a {
-                font-size: 11px;
-            }
-            .logo-text {
-                font-size: 16px;
-            }
-            .logo-img {
-                width: 32px;
-                height: 32px;
             }
             .activity-image {
                 height: 160px;
@@ -1464,10 +1506,10 @@
             // Page Loader
             const pageLoader = document.getElementById('pageLoader');
             
-            // Hide loader after a short delay for smooth entrance
+            // Hide loader after a longer delay for better visual
             setTimeout(() => {
                 pageLoader.classList.add('hidden');
-            }, 800);
+            }, 1500); // Increased from 800ms to 1500ms
             
             loadConfig();
             loadHero();
