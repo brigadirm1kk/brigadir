@@ -583,6 +583,19 @@
             overflow: hidden;
             border-radius: 12px 12px 0 0;
         }
+        
+        /* Loading skeleton animation */
+        .activity-image.loading,
+        .product-image.loading {
+            background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: loadingSkeleton 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loadingSkeleton {
+            0% {background-position: 200% 0;}
+            100% {background-position: -200% 0;}
+        }
         .activity-card:hover .activity-image {
             transform: scale(1.05) translateZ(20px);
         }
@@ -913,48 +926,56 @@
         @media (max-width: 768px) {
             /* Header Mobile */
             header {
-                padding: 10px 0;
+                padding: 8px 0;
             }
             nav {
-                padding: 0 12px;
+                padding: 0 10px;
                 flex-wrap: nowrap;
+                gap: 10px;
+            }
+            .logo-container {
+                flex-shrink: 0;
+                gap: 8px;
             }
             .logo-img {
-                width: 35px;
-                height: 35px;
+                width: 32px;
+                height: 32px;
             }
             .logo-text {
-                font-size: 16px;
+                font-size: 15px;
                 letter-spacing: 0.5px;
             }
             .nav-links {
-                gap: 10px;
+                gap: 8px;
+                flex-shrink: 0;
             }
             .nav-links a {
-                font-size: 11px;
-                padding: 3px 0;
+                font-size: 10.5px;
+                padding: 2px 0;
+                white-space: nowrap;
             }
             
             /* Hero Mobile */
             .hero {
-                margin-top: 60px;
-                height: 70vh;
+                margin-top: 55px;
+                height: 60vh;
                 min-height: 400px;
+                max-height: 600px;
             }
             .hero-title {
-                font-size: 32px; 
-                letter-spacing: 2px;
-                margin-bottom: 12px;
+                font-size: 28px; 
+                letter-spacing: 1.5px;
+                margin-bottom: 10px;
             }
             .hero-tagline {
-                font-size: 13px;
-                letter-spacing: 1px;
-                padding: 0 20px;
-                line-height: 1.5;
+                font-size: 12px;
+                letter-spacing: 0.8px;
+                padding: 0 25px;
+                line-height: 1.6;
             }
             .hero-content {
-                width: 90%;
-                padding: 10px;
+                width: 92%;
+                padding: 15px;
             }
             
             /* Sections Mobile */
@@ -1119,39 +1140,47 @@
         
         /* Extra Small Mobile (≤480px) */
         @media (max-width: 480px) {
+            header {
+                padding: 7px 0;
+            }
             nav {
-                padding: 0 10px;
+                padding: 0 8px;
+                gap: 8px;
             }
             .logo-img {
-                width: 30px;
-                height: 30px;
+                width: 28px;
+                height: 28px;
             }
             .logo-text {
                 font-size: 14px;
+                letter-spacing: 0.3px;
             }
             .nav-links {
                 gap: 6px;
             }
             .nav-links a {
-                font-size: 10px;
+                font-size: 9.5px;
+                padding: 2px 0;
             }
             .hero {
-                height: 65vh;
+                height: 55vh;
                 min-height: 350px;
+                margin-top: 50px;
             }
             .hero-title {
-                font-size: 26px;
-                letter-spacing: 1.5px;
+                font-size: 24px;
+                letter-spacing: 1.2px;
             }
             .hero-tagline {
-                font-size: 12px;
-                letter-spacing: 0.5px;
+                font-size: 11px;
+                letter-spacing: 0.6px;
+                padding: 0 20px;
             }
             .section-title {
-                font-size: 22px;
+                font-size: 20px;
             }
             .section-subtitle {
-                font-size: 12px;
+                font-size: 11px;
             }
             .activity-image {
                 height: 160px;
@@ -1395,16 +1424,29 @@
                     const card = document.createElement('div');
                     card.className = 'activity-card';
                     
-                    const imageStyle = activity.image ? `background-image: url('${activity.image}');` : '';
+                    const imageUrl = activity.image || '';
                     
                     card.innerHTML = `
-                        <div class="activity-image" style="${imageStyle}"></div>
+                        <div class="activity-image loading" data-src="${imageUrl}"></div>
                         <div class="activity-content">
                             <h3 class="activity-title">${activity.title || activity.name || 'Kegiatan'}</h3>
                             <p class="activity-description">${activity.description || ''}</p>
                         </div>
                     `;
                     grid.appendChild(card);
+                    
+                    // Lazy load image
+                    const imgDiv = card.querySelector('.activity-image');
+                    if (imageUrl) {
+                        const img = new Image();
+                        img.onload = () => {
+                            imgDiv.style.backgroundImage = `url('${imageUrl}')`;
+                            imgDiv.classList.remove('loading');
+                        };
+                        img.src = imageUrl;
+                    } else {
+                        imgDiv.classList.remove('loading');
+                    }
                 });
                 
                 if (activities.length > 3) {
@@ -1431,10 +1473,10 @@
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     
-                    const imageStyle = product.image ? `background-image: url('${product.image}');` : '';
+                    const imageUrl = product.image || '';
                     
                     card.innerHTML = `
-                        <div class="product-image" style="${imageStyle}"></div>
+                        <div class="product-image loading" data-src="${imageUrl}"></div>
                         <div class="product-info">
                             <h3 class="product-name">${product.name || 'Produk'}</h3>
                             <div class="product-price">${formatPrice(product.price || 0)}</div>
@@ -1442,6 +1484,19 @@
                         </div>
                     `;
                     grid.appendChild(card);
+                    
+                    // Lazy load image
+                    const imgDiv = card.querySelector('.product-image');
+                    if (imageUrl) {
+                        const img = new Image();
+                        img.onload = () => {
+                            imgDiv.style.backgroundImage = `url('${imageUrl}')`;
+                            imgDiv.classList.remove('loading');
+                        };
+                        img.src = imageUrl;
+                    } else {
+                        imgDiv.classList.remove('loading');
+                    }
                 });
                 
                 if (products.length > 6) {
