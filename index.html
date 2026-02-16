@@ -468,13 +468,199 @@
         .copyright {text-align: center; color: #666; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 14px;}
 
         @media (max-width: 768px) {
-            .hero-title {font-size: 48px; letter-spacing: 4px;}
-            .hero-tagline {font-size: 16px;}
-            .section-title {font-size: 28px;}
-            .nav-links {gap: 20px;}
-            .about-section {padding: 30px;}
-            section {padding: 60px 20px;}
-            .products-grid {grid-template-columns: 1fr;}
+            /* Header Mobile */
+            nav {
+                padding: 0 20px;
+            }
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+            .logo-text {
+                font-size: 20px;
+                letter-spacing: 1px;
+            }
+            .nav-links {
+                gap: 15px;
+                font-size: 13px;
+            }
+            .nav-links a {
+                font-size: 13px;
+            }
+            
+            /* Hero Mobile */
+            .hero {
+                margin-top: 70px;
+                height: 80vh;
+            }
+            .hero-title {
+                font-size: 36px; 
+                letter-spacing: 3px;
+                margin-bottom: 10px;
+            }
+            .hero-tagline {
+                font-size: 14px;
+                letter-spacing: 1.5px;
+                padding: 0 15px;
+            }
+            .hero-content {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            /* Sections Mobile */
+            section {
+                padding: 50px 20px;
+            }
+            .section-title {
+                font-size: 26px;
+                letter-spacing: 1px;
+            }
+            .section-subtitle {
+                font-size: 14px;
+            }
+            
+            /* Activities Mobile */
+            .activities-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .activity-card {
+                margin: 0 auto;
+                max-width: 100%;
+            }
+            .activity-image {
+                height: 200px;
+            }
+            .activity-content {
+                padding: 20px;
+            }
+            .activity-title {
+                font-size: 18px;
+            }
+            .activity-description {
+                font-size: 13px;
+            }
+            
+            /* Products Mobile */
+            .products-section {
+                padding: 50px 0;
+                margin: 50px 0;
+            }
+            .products-container {
+                padding: 0 20px;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .product-card {
+                max-width: 100%;
+            }
+            .product-image {
+                height: 220px;
+            }
+            .product-info {
+                padding: 18px;
+            }
+            .product-name {
+                font-size: 17px;
+            }
+            .product-price {
+                font-size: 20px;
+            }
+            .product-button {
+                padding: 10px 20px;
+                font-size: 13px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            /* About Mobile */
+            .about-section {
+                padding: 30px 20px;
+                border-radius: 10px;
+            }
+            .about-text {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            
+            /* Footer Mobile */
+            footer {
+                padding: 40px 20px 20px;
+                margin-top: 60px;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .footer-section {
+                text-align: center;
+            }
+            .footer-section h3 {
+                font-size: 16px;
+            }
+            .footer-section p,
+            .footer-section a {
+                font-size: 13px;
+            }
+            .copyright {
+                font-size: 12px;
+                padding-top: 20px;
+            }
+            
+            /* Buttons Mobile */
+            .soft-button {
+                padding: 10px 25px;
+                font-size: 13px;
+            }
+            
+            /* Disable parallax on mobile for better performance */
+            .hero-content {
+                transform: translate(-50%, -50%) !important;
+                opacity: 1 !important;
+            }
+            .slide {
+                transform: none !important;
+            }
+        }
+        
+        /* Extra Small Mobile (≤480px) */
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+            .hero-tagline {
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+            .section-title {
+                font-size: 22px;
+            }
+            .nav-links {
+                gap: 10px;
+            }
+            .nav-links a {
+                font-size: 12px;
+            }
+            .logo-text {
+                font-size: 18px;
+            }
+        }
+        
+        /* Landscape Mobile Fix */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero {
+                height: 100vh;
+            }
+            .hero-title {
+                font-size: 32px;
+            }
+            .hero-tagline {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -845,32 +1031,36 @@
                 });
             }, 100);
 
-            // Parallax effect for hero
+            // Parallax effect for hero (desktop only)
             let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const scrolled = window.pageYOffset;
-                        const heroContent = document.querySelector('.hero-content');
-                        const slides = document.querySelectorAll('.slide');
-                        
-                        if (heroContent && scrolled < window.innerHeight) {
-                            const translateY = scrolled * 0.5;
-                            heroContent.style.transform = `translate(-50%, calc(-50% + ${translateY}px))`;
-                            heroContent.style.opacity = 1 - (scrolled / window.innerHeight);
-                        }
-                        
-                        slides.forEach(slide => {
-                            if (scrolled < window.innerHeight) {
-                                slide.style.transform = `translateY(${scrolled * 0.3}px)`;
+            const isMobile = window.innerWidth <= 768;
+            
+            if (!isMobile) {
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            const scrolled = window.pageYOffset;
+                            const heroContent = document.querySelector('.hero-content');
+                            const slides = document.querySelectorAll('.slide');
+                            
+                            if (heroContent && scrolled < window.innerHeight) {
+                                const translateY = scrolled * 0.5;
+                                heroContent.style.transform = `translate(-50%, calc(-50% + ${translateY}px))`;
+                                heroContent.style.opacity = 1 - (scrolled / window.innerHeight);
                             }
+                            
+                            slides.forEach(slide => {
+                                if (scrolled < window.innerHeight) {
+                                    slide.style.transform = `translateY(${scrolled * 0.3}px)`;
+                                }
+                            });
+                            
+                            ticking = false;
                         });
-                        
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
+                        ticking = true;
+                    }
+                });
+            }
         });
     </script>
 </body>
