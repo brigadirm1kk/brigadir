@@ -51,11 +51,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            font-weight: 800;
-            color: #1a1a1a;
             margin: 0 auto 15px;
             animation: pulse 1.5s ease-in-out infinite;
+            overflow: hidden;
+            padding: 15px;
+        }
+        
+        .loader-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         
         @keyframes pulse {
@@ -785,14 +790,7 @@
                 font-size: 13px;
             }
             
-            /* Disable parallax on mobile for better performance */
-            .hero-content {
-                transform: translate(-50%, -50%) !important;
-                opacity: 1 !important;
-            }
-            .slide {
-                transform: none !important;
-            }
+            /* Enable parallax on mobile - remove the disable rules */
             
             /* Reduce animation intensity on mobile */
             .activity-card:hover,
@@ -861,7 +859,9 @@
     <!-- Page Loader -->
     <div class="page-loader" id="pageLoader">
         <div class="loader-content">
-            <div class="loader-logo">B</div>
+            <div class="loader-logo">
+                <img src="https://i.postimg.cc/xjtJtyKQ/Picture2.png" alt="BRIGADIR">
+            </div>
             <div class="loader-text">BRIGADIR</div>
         </div>
     </div>
@@ -1240,36 +1240,33 @@
                 });
             }, 100);
 
-            // Parallax effect for hero (desktop only)
+            // Parallax effect for hero (works on all devices including mobile)
             let ticking = false;
-            const isMobile = window.innerWidth <= 768;
             
-            if (!isMobile) {
-                window.addEventListener('scroll', () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(() => {
-                            const scrolled = window.pageYOffset;
-                            const heroContent = document.querySelector('.hero-content');
-                            const slides = document.querySelectorAll('.slide');
-                            
-                            if (heroContent && scrolled < window.innerHeight) {
-                                const translateY = scrolled * 0.5;
-                                heroContent.style.transform = `translate(-50%, calc(-50% + ${translateY}px))`;
-                                heroContent.style.opacity = 1 - (scrolled / window.innerHeight);
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.pageYOffset;
+                        const heroContent = document.querySelector('.hero-content');
+                        const slides = document.querySelectorAll('.slide');
+                        
+                        if (heroContent && scrolled < window.innerHeight) {
+                            const translateY = scrolled * 0.5;
+                            heroContent.style.transform = `translate(-50%, calc(-50% + ${translateY}px))`;
+                            heroContent.style.opacity = 1 - (scrolled / window.innerHeight);
+                        }
+                        
+                        slides.forEach(slide => {
+                            if (scrolled < window.innerHeight) {
+                                slide.style.transform = `translateY(${scrolled * 0.3}px)`;
                             }
-                            
-                            slides.forEach(slide => {
-                                if (scrolled < window.innerHeight) {
-                                    slide.style.transform = `translateY(${scrolled * 0.3}px)`;
-                                }
-                            });
-                            
-                            ticking = false;
                         });
-                        ticking = true;
-                    }
-                });
-            }
+                        
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
         });
     </script>
 </body>
