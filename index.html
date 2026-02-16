@@ -931,7 +931,9 @@
             nav {
                 padding: 0 10px;
                 flex-wrap: nowrap;
-                gap: 10px;
+                gap: 8px;
+                justify-content: space-between;
+                align-items: center;
             }
             .logo-container {
                 flex-shrink: 0;
@@ -942,17 +944,22 @@
                 height: 32px;
             }
             .logo-text {
-                font-size: 15px;
+                font-size: 14px;
                 letter-spacing: 0.5px;
             }
             .nav-links {
-                gap: 8px;
+                gap: 6px;
                 flex-shrink: 0;
+                display: flex !important;
+            }
+            .nav-links li {
+                display: block !important;
             }
             .nav-links a {
-                font-size: 10.5px;
-                padding: 2px 0;
+                font-size: 10px;
+                padding: 2px 3px;
                 white-space: nowrap;
+                display: block !important;
             }
             
             /* Hero Mobile */
@@ -1145,22 +1152,27 @@
             }
             nav {
                 padding: 0 8px;
-                gap: 8px;
+                gap: 6px;
             }
             .logo-img {
                 width: 28px;
                 height: 28px;
             }
             .logo-text {
-                font-size: 14px;
+                font-size: 13px;
                 letter-spacing: 0.3px;
             }
             .nav-links {
-                gap: 6px;
+                gap: 4px;
+                display: flex !important;
+            }
+            .nav-links li {
+                display: block !important;
             }
             .nav-links a {
-                font-size: 9.5px;
-                padding: 2px 0;
+                font-size: 9px;
+                padding: 2px 2px;
+                display: block !important;
             }
             .hero {
                 height: 55vh;

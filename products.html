@@ -7,42 +7,95 @@
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box;}
         body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333;}
-        header {background: white; padding: 15px 0; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05); border-bottom: 1px solid rgba(244, 208, 63, 0.2);}
+        
+        /* Header - Consistent with index.html */
+        header {background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05); border-bottom: 1px solid rgba(244, 208, 63, 0.2);}
         nav {max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 30px;}
-        .logo-container {display: flex; align-items: center; gap: 15px;}
-        .logo-img {width: 50px; height: 50px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #f4d03f; font-weight: 800; font-size: 24px; border: 2px solid #f4d03f;}
-        .logo-text {font-size: 24px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px;}
+        .logo-container {display: flex; align-items: center; gap: 15px; cursor: pointer; transition: transform 0.3s ease; perspective: 1000px;}
+        .logo-container:hover {transform: scale(1.05);}
+        .logo-img {width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: transparent; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d;}
+        .logo-container:hover .logo-img {transform: rotateY(360deg);}
+        .logo-img img {width: 100%; height: 100%; object-fit: contain; backface-visibility: hidden;}
+        .logo-text {font-size: 24px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px; transition: color 0.3s ease;}
+        .logo-container:hover .logo-text {color: #f4d03f;}
         .nav-links {display: flex; gap: 35px; list-style: none;}
-        .nav-links a {color: #555; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease;}
-        .nav-links a:hover {color: #1a1a1a;}
+        .nav-links a {color: #555; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease; position: relative; padding: 5px 0;}
+        .nav-links a::after {content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #f4d03f; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
+        .nav-links a:hover {color: #1a1a1a; transform: translateY(-2px);}
+        .nav-links a:hover::after {width: 100%;}
+        
+        /* Main Content */
         main {max-width: 1200px; margin: 40px auto; padding: 40px 30px;}
         .page-header {text-align: center; margin-bottom: 60px;}
-        .page-title {font-size: 42px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; letter-spacing: 2px;}
+        .page-title {font-size: 42px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; letter-spacing: 2px; position: relative; display: inline-block;}
         .page-subtitle {font-size: 16px; color: #666;}
         .loading {text-align: center; padding: 100px 0; color: #f4d03f; font-size: 18px;}
-        .products-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;}
-        .product-card {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;}
-        .product-card:hover {transform: translateY(-8px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);}
-        .product-image {width: 100%; height: 200px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); background-size: cover; background-position: center;}
-        .product-info {padding: 20px;}
+        
+        /* Products Grid */
+        .products-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; justify-items: center;}
+        .product-card {background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; max-width: 350px; position: relative; transform-style: preserve-3d;}
+        .product-card::after {content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #f4d03f, #1a1a1a); transform: scaleX(0); transition: transform 0.5s ease;}
+        .product-card:hover {box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);}
+        .product-card:hover::after {transform: scaleX(1);}
+        .product-image {width: 100%; height: 200px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); background-size: cover; background-position: center; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;}
+        .product-image.loading {background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loadingSkeleton 1.5s ease-in-out infinite;}
+        @keyframes loadingSkeleton {0% {background-position: 200% 0;} 100% {background-position: -200% 0;}}
+        .product-card:hover .product-image {transform: scale(1.15);}
+        .product-info {padding: 20px; position: relative; z-index: 2;}
         .product-category {font-size: 12px; color: #f4d03f; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
-        .product-name {font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;}
-        .product-price {font-size: 22px; font-weight: 700; color: #f4d03f; margin-bottom: 15px;}
-        .product-button {display: inline-block; padding: 10px 24px; background: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; transition: all 0.3s ease;}
-        .product-button:hover {background: #2d2d2d; transform: scale(1.02);}
+        .product-name {font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; transition: all 0.3s ease;}
+        .product-card:hover .product-name {color: #f4d03f; transform: translateX(5px);}
+        .product-price {font-size: 22px; font-weight: 700; color: #f4d03f; margin-bottom: 15px; transition: all 0.3s ease;}
+        .product-card:hover .product-price {transform: scale(1.1);}
+        .product-button {display: inline-block; padding: 10px 24px; background: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;}
+        .product-button::before {content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: #f4d03f; border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.5s ease, height 0.5s ease;}
+        .product-button:hover::before {width: 300px; height: 300px;}
+        .product-button:hover {transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); color: #1a1a1a;}
+        .product-button span {position: relative; z-index: 1;}
+        
+        /* Footer */
         footer {background: #1a1a1a; color: white; padding: 40px 30px 25px; margin-top: 80px;}
         .footer-content {max-width: 1200px; margin: 0 auto; text-align: center;}
         .footer-text {color: #aaa; font-size: 14px; margin-bottom: 15px;}
-        .back-link {color: #f4d03f; text-decoration: none; font-weight: 500;}
-        .back-link:hover {text-decoration: underline;}
-        @media (max-width: 768px) {.page-title {font-size: 32px;} .products-grid {grid-template-columns: 1fr;}}
+        .back-link {color: #f4d03f; text-decoration: none; font-weight: 500; transition: color 0.3s ease;}
+        .back-link:hover {color: #fff; text-decoration: underline;}
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {padding: 8px 0;}
+            nav {padding: 0 10px; gap: 8px; justify-content: space-between;}
+            .logo-container {gap: 8px;}
+            .logo-img {width: 32px; height: 32px;}
+            .logo-text {font-size: 14px; letter-spacing: 0.5px;}
+            .nav-links {gap: 6px; display: flex !important;}
+            .nav-links li {display: block !important;}
+            .nav-links a {font-size: 10px; padding: 2px 3px; white-space: nowrap; display: block !important;}
+            main {padding: 30px 15px; margin: 20px auto;}
+            .page-title {font-size: 28px;}
+            .page-subtitle {font-size: 14px;}
+            .products-grid {grid-template-columns: 1fr; gap: 20px;}
+            .product-card {max-width: 100%; transform: none !important;}
+            .product-card:hover {transform: translateY(-4px) !important;}
+            .product-image {height: 200px;}
+        }
+        
+        @media (max-width: 480px) {
+            nav {padding: 0 8px; gap: 6px;}
+            .logo-img {width: 28px; height: 28px;}
+            .logo-text {font-size: 13px;}
+            .nav-links {gap: 4px;}
+            .nav-links a {font-size: 9px; padding: 2px 2px;}
+            .page-title {font-size: 24px;}
+        }
     </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo-container">
-                <div class="logo-img">B</div>
+                <div class="logo-img">
+                    <img src="https://i.postimg.cc/xjtJtyKQ/Picture2.png" alt="BRIGADIR Logo">
+                </div>
                 <div class="logo-text">BRIGADIR</div>
             </div>
             <ul class="nav-links">
@@ -60,78 +113,86 @@
             <p class="page-subtitle">Layanan persewaan untuk berbagai kebutuhan acara Anda</p>
         </div>
 
-        <div class="loading" id="loading">Memuat produk...</div>
+        <div id="productsLoading" class="loading">Loading products...</div>
         <div class="products-grid" id="productsGrid"></div>
     </main>
 
     <footer>
         <div class="footer-content">
-            <p class="footer-text">© 2024 BRIGADIR. All rights reserved.</p>
-            <a href="index.html" class="back-link">Kembali ke Halaman Utama</a>
+            <p class="footer-text">&copy; 2024 BRIGADIR. All rights reserved.</p>
+            <a href="index.html" class="back-link">← Back to Home</a>
         </div>
     </footer>
 
     <script>
-        const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHuoDTekMlHzFQVbMkHIDP8S6cOnmzcs-cGtW2laUnlqtEp9sX77IN0kgYiWQrPUyLH9mmmmWWFVHy/pub?gid=586106354&single=true&output=csv';
+        const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=3&single=true&output=csv';
 
         function parseCSV(csv) {
             const lines = csv.trim().split('\n');
             if (lines.length < 2) return [];
-            const headers = lines[0].split(',').map(h => h.trim());
+            const headers = lines[0].split(',').map(h => h.trim().replace(/['"]/g, ''));
             const data = [];
             for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                const values = lines[i].split(',');
-                const row = {};
+                const values = lines[i].split(',').map(v => v.trim().replace(/['"]/g, ''));
+                const obj = {};
                 headers.forEach((header, index) => {
-                    row[header] = values[index] ? values[index].trim() : '';
+                    obj[header] = values[index] || '';
                 });
-                data.push(row);
+                data.push(obj);
             }
             return data;
         }
 
         function formatPrice(price) {
-            return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+            const num = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.-]+/g, '')) : price;
+            if (isNaN(num)) return 'Rp 0';
+            return 'Rp ' + num.toLocaleString('id-ID');
         }
 
         async function loadProducts() {
             try {
-                const response = await fetch(SPREADSHEET_URL);
+                const response = await fetch(SHEETS_URL);
                 const csv = await response.text();
                 const products = parseCSV(csv);
-
-                document.getElementById('loading').style.display = 'none';
-
+                
+                document.getElementById('productsLoading').style.display = 'none';
+                
                 const grid = document.getElementById('productsGrid');
-
-                if (products.length === 0) {
-                    grid.innerHTML = '<p style="text-align: center; color: #666; padding: 60px 20px;">Belum ada produk yang tersedia.</p>';
-                    return;
-                }
-
+                
                 products.forEach(product => {
                     const card = document.createElement('div');
                     card.className = 'product-card';
-
-                    const imageStyle = product.image ? `background-image: url('${product.image}');` : '';
-
+                    
+                    const imageUrl = product.image || '';
+                    
                     card.innerHTML = `
-                        <div class="product-image" style="${imageStyle}"></div>
+                        <div class="product-image loading" data-src="${imageUrl}"></div>
                         <div class="product-info">
                             ${product.category ? `<div class="product-category">${product.category}</div>` : ''}
                             <h3 class="product-name">${product.name || 'Produk'}</h3>
-                            <div class="product-price">${formatPrice(product.price || 0)}/hari</div>
-                            <a href="product-detail.html?id=${product.id}" class="product-button">Detail Product</a>
+                            <div class="product-price">${formatPrice(product.price || 0)}</div>
+                            <a href="product-detail.html?id=${product.id}" class="product-button"><span>Detail Product</span></a>
                         </div>
                     `;
                     grid.appendChild(card);
+                    
+                    // Lazy load image
+                    const imgDiv = card.querySelector('.product-image');
+                    if (imageUrl) {
+                        const img = new Image();
+                        img.onload = () => {
+                            imgDiv.style.backgroundImage = `url('${imageUrl}')`;
+                            imgDiv.classList.remove('loading');
+                        };
+                        img.src = imageUrl;
+                    } else {
+                        imgDiv.classList.remove('loading');
+                    }
                 });
-
+                
             } catch (error) {
                 console.error('Error loading products:', error);
-                document.getElementById('loading').innerHTML = 
-                    'Gagal memuat produk. <a href="index.html" style="color: #f4d03f;">Kembali ke halaman utama</a>';
+                document.getElementById('productsLoading').textContent = 'Gagal memuat produk';
             }
         }
 

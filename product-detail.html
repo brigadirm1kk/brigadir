@@ -7,21 +7,40 @@
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box;}
         body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333;}
-        header {background: white; padding: 15px 0; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05); border-bottom: 1px solid rgba(244, 208, 63, 0.2);}
+        
+        /* Header - Consistent with index.html */
+        header {background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 15px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05); border-bottom: 1px solid rgba(244, 208, 63, 0.2);}
         nav {max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 30px;}
-        .logo-container {display: flex; align-items: center; gap: 15px;}
-        .logo-img {width: 50px; height: 50px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #f4d03f; font-weight: 800; font-size: 24px; border: 2px solid #f4d03f;}
-        .logo-text {font-size: 24px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px;}
+        .logo-container {display: flex; align-items: center; gap: 15px; cursor: pointer; transition: transform 0.3s ease; perspective: 1000px;}
+        .logo-container:hover {transform: scale(1.05);}
+        .logo-img {width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: transparent; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d;}
+        .logo-container:hover .logo-img {transform: rotateY(360deg);}
+        .logo-img img {width: 100%; height: 100%; object-fit: contain; backface-visibility: hidden;}
+        .logo-text {font-size: 24px; font-weight: 700; color: #1a1a1a; letter-spacing: 2px; transition: color 0.3s ease;}
+        .logo-container:hover .logo-text {color: #f4d03f;}
         .nav-links {display: flex; gap: 35px; list-style: none;}
-        .nav-links a {color: #555; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease;}
-        .nav-links a:hover {color: #1a1a1a;}
+        .nav-links a {color: #555; text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease; position: relative; padding: 5px 0;}
+        .nav-links a::after {content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #f4d03f; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
+        .nav-links a:hover {color: #1a1a1a; transform: translateY(-2px);}
+        .nav-links a:hover::after {width: 100%;}
+        
+        /* Loading */
         .loading {text-align: center; padding: 150px 0; color: #f4d03f; font-size: 18px;}
+        
+        /* Main Content */
         main {max-width: 1200px; margin: 40px auto; padding: 40px 30px;}
-        .back-link {display: inline-block; color: #666; text-decoration: none; margin-bottom: 30px; font-size: 14px; transition: color 0.3s ease;}
-        .back-link:hover {color: #1a1a1a;}
+        .back-link {display: inline-block; color: #666; text-decoration: none; margin-bottom: 30px; font-size: 14px; transition: all 0.3s ease;}
+        .back-link:hover {color: #1a1a1a; transform: translateX(-5px);}
+        
+        /* Product Detail */
         .product-detail {display: grid; grid-template-columns: 1fr 1fr; gap: 60px; background: white; border-radius: 15px; padding: 50px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);}
         .product-gallery {position: sticky; top: 100px; height: fit-content;}
-        .main-image {width: 100%; height: 450px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); border-radius: 12px; background-size: cover; background-position: center; margin-bottom: 20px;}
+        .main-image {width: 100%; height: 450px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); border-radius: 12px; background-size: cover; background-position: center; margin-bottom: 20px; transition: transform 0.3s ease;}
+        .main-image.loading {background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: loadingSkeleton 1.5s ease-in-out infinite;}
+        @keyframes loadingSkeleton {0% {background-position: 200% 0;} 100% {background-position: -200% 0;}}
+        .main-image:hover {transform: scale(1.02);}
+        
+        /* Product Info */
         .product-info-section {display: flex; flex-direction: column;}
         .product-category {font-size: 13px; color: #f4d03f; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
         .product-title {font-size: 36px; font-weight: 600; color: #1a1a1a; margin-bottom: 20px; letter-spacing: 1px;}
@@ -31,6 +50,8 @@
         .product-price {font-size: 38px; font-weight: 700; color: #f4d03f; margin-bottom: 10px;}
         .price-period {font-size: 16px; color: #666; margin-bottom: 30px;}
         .product-description {font-size: 15px; line-height: 1.8; color: #555; margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid #e0e0e0;}
+        
+        /* Detail Section */
         .detail-section {margin-bottom: 30px;}
         .detail-title {font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 15px;}
         .detail-list {list-style: none; padding: 0;}
@@ -38,22 +59,52 @@
         .detail-item:last-child {border-bottom: none;}
         .detail-label {color: #666;}
         .detail-value {color: #1a1a1a; font-weight: 500;}
+        
+        /* WhatsApp Button */
         .whatsapp-button {display: inline-flex; align-items: center; gap: 12px; padding: 16px 40px; background: #25D366; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); margin-top: 20px;}
         .whatsapp-button:hover {background: #20BA5A; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);}
         .whatsapp-icon {font-size: 24px;}
+        
+        /* Footer */
         footer {background: #1a1a1a; color: white; padding: 40px 30px 25px; margin-top: 80px;}
         .footer-content {max-width: 1200px; margin: 0 auto; text-align: center;}
         .footer-text {color: #aaa; font-size: 14px;}
+        
+        /* Responsive Tablet */
         @media (max-width: 1024px) {
             .product-detail {grid-template-columns: 1fr; gap: 40px;}
             .product-gallery {position: relative; top: 0;}
             .main-image {height: 350px;}
         }
+        
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .product-detail {padding: 30px;}
-            .product-title {font-size: 28px;}
-            .product-price {font-size: 32px;}
+            header {padding: 8px 0;}
+            nav {padding: 0 10px; gap: 8px; justify-content: space-between;}
+            .logo-container {gap: 8px;}
+            .logo-img {width: 32px; height: 32px;}
+            .logo-text {font-size: 14px; letter-spacing: 0.5px;}
+            .nav-links {gap: 6px; display: flex !important;}
+            .nav-links li {display: block !important;}
+            .nav-links a {font-size: 10px; padding: 2px 3px; white-space: nowrap; display: block !important;}
+            main {padding: 30px 15px; margin: 20px auto;}
+            .product-detail {padding: 25px; gap: 30px;}
+            .product-title {font-size: 26px;}
+            .product-price {font-size: 30px;}
             .main-image {height: 280px;}
+            .whatsapp-button {width: 100%; justify-content: center; padding: 14px 30px; font-size: 15px;}
+        }
+        
+        @media (max-width: 480px) {
+            nav {padding: 0 8px; gap: 6px;}
+            .logo-img {width: 28px; height: 28px;}
+            .logo-text {font-size: 13px;}
+            .nav-links {gap: 4px;}
+            .nav-links a {font-size: 9px; padding: 2px 2px;}
+            .product-detail {padding: 20px;}
+            .product-title {font-size: 22px;}
+            .product-price {font-size: 26px;}
+            .main-image {height: 250px;}
         }
     </style>
 </head>
@@ -61,7 +112,9 @@
     <header>
         <nav>
             <div class="logo-container">
-                <div class="logo-img">B</div>
+                <div class="logo-img">
+                    <img src="https://i.postimg.cc/xjtJtyKQ/Picture2.png" alt="BRIGADIR Logo">
+                </div>
                 <div class="logo-text">BRIGADIR</div>
             </div>
             <ul class="nav-links">
@@ -80,7 +133,7 @@
 
         <div class="product-detail">
             <div class="product-gallery">
-                <div class="main-image" id="mainImage"></div>
+                <div class="main-image loading" id="mainImage"></div>
             </div>
 
             <div class="product-info-section">
@@ -117,20 +170,20 @@
     </footer>
 
     <script>
-        const PRODUCTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHuoDTekMlHzFQVbMkHIDP8S6cOnmzcs-cGtW2laUnlqtEp9sX77IN0kgYiWQrPUyLH9mmmmWWFVHy/pub?gid=586106354&single=true&output=csv';
-        const ABOUT_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQHuoDTekMlHzFQVbMkHIDP8S6cOnmzcs-cGtW2laUnlqtEp9sX77IN0kgYiWQrPUyLH9mmmmWWFVHy/pub?gid=1093669165&single=true&output=csv';
+        const PRODUCTS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=3&single=true&output=csv';
+        const ABOUT_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEn.../pub?gid=4&single=true&output=csv';
 
         function parseCSV(csv) {
             const lines = csv.trim().split('\n');
             if (lines.length < 2) return [];
-            const headers = lines[0].split(',').map(h => h.trim());
+            const headers = lines[0].split(',').map(h => h.trim().replace(/['"]/g, ''));
             const data = [];
             for (let i = 1; i < lines.length; i++) {
                 if (!lines[i].trim()) continue;
-                const values = lines[i].split(',');
+                const values = lines[i].split(',').map(v => v.trim().replace(/['"]/g, ''));
                 const row = {};
                 headers.forEach((header, index) => {
-                    row[header] = values[index] ? values[index].trim() : '';
+                    row[header] = values[index] || '';
                 });
                 data.push(row);
             }
@@ -138,7 +191,9 @@
         }
 
         function formatPrice(price) {
-            return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+            const num = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.-]+/g, '')) : price;
+            if (isNaN(num)) return 'Rp 0';
+            return 'Rp ' + num.toLocaleString('id-ID');
         }
 
         function generateStars(rating) {
@@ -186,9 +241,18 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
 
-                // Populate product details
-                const imageStyle = product.image ? `background-image: url('${product.image}');` : '';
-                document.getElementById('mainImage').style = imageStyle;
+                // Lazy load main image
+                const mainImageDiv = document.getElementById('mainImage');
+                if (product.image) {
+                    const img = new Image();
+                    img.onload = () => {
+                        mainImageDiv.style.backgroundImage = `url('${product.image}')`;
+                        mainImageDiv.classList.remove('loading');
+                    };
+                    img.src = product.image;
+                } else {
+                    mainImageDiv.classList.remove('loading');
+                }
 
                 document.getElementById('productCategory').textContent = product.category || 'Produk';
                 document.getElementById('productTitle').textContent = product.name || 'Produk';
