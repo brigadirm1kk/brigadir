@@ -235,19 +235,26 @@
                 }
 
                 // Load WhatsApp number from About sheet
-                let whatsappNumber = '6281334188070'; // Default
-                try {
-                    const aboutResponse = await fetch(ABOUT_URL);
-                    const aboutCSV = await aboutResponse.text();
-                    const aboutData = parseCSV(aboutCSV);
-                    console.log(aboutData);
-                    if (aboutData.length > 0 && aboutData[0].whatsapp) {
-                        whatsappNumber = aboutData[0][5].whatsapp;
-                    }
-                } catch (e) {
-                    console.warn('Could not load WhatsApp number from sheet, using default');
-                }
+                let whatsappNumber = '6281334188070'; // default (sudah format benar)
 
+try {
+    const aboutResponse = await fetch(ABOUT_URL);
+    const aboutCSV = await aboutResponse.text();
+    const aboutData = parseCSV(aboutCSV);
+
+    console.log('Data dari sheet:', aboutData);
+
+    if (aboutData.length > 0 && aboutData[0].whatsapp) {
+        whatsappNumber = aboutData[0].whatsapp;
+        console.log('Nomor dari spreadsheet:', whatsappNumber);
+    } else {
+        console.log('Spreadsheet tidak punya nomor, pakai default');
+    }
+
+} catch (e) {
+    console.error('Gagal ambil spreadsheet:', e);
+    console.log('Fallback ke default');
+        }
                 // Hide loading, show content
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
