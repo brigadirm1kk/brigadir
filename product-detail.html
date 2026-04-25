@@ -240,8 +240,9 @@
                     const aboutResponse = await fetch(ABOUT_URL);
                     const aboutCSV = await aboutResponse.text();
                     const aboutData = parseCSV(aboutCSV);
+                    console.log(aboutData);
                     if (aboutData.length > 0 && aboutData[0].whatsapp) {
-                        whatsappNumber = aboutData[0].whatsapp;
+                        whatsappNumber = aboutData[0][5].whatsapp;
                     }
                 } catch (e) {
                     console.warn('Could not load WhatsApp number from sheet, using default');
